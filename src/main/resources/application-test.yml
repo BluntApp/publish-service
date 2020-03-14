@@ -1,0 +1,45 @@
+server:
+  port: 9004
+spring:
+  kafka:
+    #bootstrap-servers: http://${HOST_IP}:9092
+    bootstrap-servers: http://localhost:9092
+  sleuth:
+    messaging:
+      kafka:
+        enabled: true
+    sampler:
+      probability: 1.0
+  zipkin:
+    kafka:
+      topic: blunt-publish
+    sender:
+      type: kafka
+  boot:
+    admin:
+      client:
+        # url: http://${HOST_IP}:9000
+        url: http://localhost:9000
+        instance:
+          health-url: http://host.docker.internal:9004/actuator/health
+          management-url: http://host.docker.internal:9004/actuator
+          service-url: http://host.docker.internal:9004
+  data:
+    mongodb:
+      uri: mongodb+srv://blunt:blunt@clusterblunt-ozeey.gcp.mongodb.net/publish?retryWrites=true&w=majority
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+logging:
+  file:
+    path: C:/Users/kpaulpa/Documents/workArea/TechnicalWork/logs/blunt-publish-service
+
+feign:
+  client:
+    config:
+      onboard-service:
+        connectTimeout: 1000
+        readTimeout: 1000
